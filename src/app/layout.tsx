@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import PageTransition from "@/components/ui/PageTransition";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -142,7 +143,9 @@ export default function RootLayout({
         />
         <meta name="theme-color" content="#1a2634" />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <PageTransition>{children}</PageTransition>
+      </body>
     </html>
   );
 }

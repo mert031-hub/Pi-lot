@@ -8,6 +8,8 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import TeamSection from "@/components/sections/TeamSection";
 import WhyPiLotSection from "@/components/sections/WhyPiLotSection";
 import ValuePropositionSection from "@/components/sections/ValuePropositionSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import ROICalculatorSection from "@/components/sections/ROICalculatorSection";
 import CaseStudiesSection from "@/components/sections/CaseStudiesSection";
 import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
@@ -27,6 +29,8 @@ export default function Home() {
         <ProcessSection />
         <TeamSection />
         <WhyPiLotSection />
+        <TestimonialsSection />
+        <ROICalculatorSection />
         <ValuePropositionSection />
         <CaseStudiesSection />
         <FAQSection />
