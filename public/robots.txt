@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pi-lot.com.tr/sitemap.xml
+
+Disallow: /api/
