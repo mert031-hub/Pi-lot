@@ -10,6 +10,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { ChevronRight, Phone, ArrowDown } from "lucide-react";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 const stats = [
   { value: "200+", label: "Tamamlanan\nProje" },
@@ -142,6 +143,30 @@ export default function HeroSection() {
               backgroundSize: "88px 88px",
             }}
           />
+          {/* Pi digits — subliminal brand DNA at ~3% opacity */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
+            {[
+              { top: "11%", text: "3 · 1 4 1 5 9 2 6 5 3 5  8 9 7 9 3 2 3 8 4 6  2 6 4 3 3 8 3 2 7 9  5 0 2 8 8 4 1 9 7 1  6 9 3 9 9 3 7 5 1 0" },
+              { top: "34%", text: "5 8 2 0 9 7 4 9 4 4 5  9 2 3 0 7 8 1 6 4 0  6 2 8 6 2 0 8 9 9 8  6 2 8 0 3 4 8 2 5 3  4 2 1 1 7 0 6 7 9 8" },
+              { top: "57%", text: "8 2 1 4 8 0 8 6 5 1 3  2 8 2 3 0 6 6 4 7 0  9 3 8 4 4 6 0 9 5 5  0 5 8 2 2 3 1 7 2 5  3 5 9 4 0 8 1 2 8 4" },
+              { top: "79%", text: "8 1 1 1 7 4 5 0 2 8 4  1 0 2 7 0 1 9 3 8 5  2 1 1 0 5 5 5 9 6 4  4 6 2 2 9 4 8 9 5 4  9 3 0 3 8 1 9 6 4 4" },
+            ].map((row, i) => (
+              <div
+                key={i}
+                className="absolute left-0 right-0 text-center font-mono"
+                style={{
+                  top: row.top,
+                  color: "rgba(108,140,165,1)",
+                  opacity: 0.028,
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  lineHeight: 1,
+                }}
+              >
+                {row.text}
+              </div>
+            ))}
+          </div>
         </motion.div>
       </motion.div>
 
@@ -264,34 +289,38 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
-          <a
-            href="#iletisim"
-            className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
-            style={{ backgroundColor: "#6C8CA5", color: "#ffffff", letterSpacing: "0.1em" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#4a6f8a")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#6C8CA5")}
-          >
-            Projeni Anlat
-            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </a>
-          <a
-            href="tel:+905307456800"
-            className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
-            style={{ border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.82)", letterSpacing: "0.1em" }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = "#DF6B30";
-              el.style.color = "#DF6B30";
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = "rgba(255,255,255,0.2)";
-              el.style.color = "rgba(255,255,255,0.82)";
-            }}
-          >
-            <Phone className="w-4 h-4" />
-            Ücretsiz Ön Görüşme
-          </a>
+          <MagneticButton strength={0.25}>
+            <a
+              href="#iletisim"
+              className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
+              style={{ backgroundColor: "#6C8CA5", color: "#ffffff", letterSpacing: "0.1em" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#4a6f8a")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = "#6C8CA5")}
+            >
+              Projeni Anlat
+              <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+          </MagneticButton>
+          <MagneticButton strength={0.22}>
+            <a
+              href="tel:+905307456800"
+              className="group inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300"
+              style={{ border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.82)", letterSpacing: "0.1em" }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "#DF6B30";
+                el.style.color = "#DF6B30";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "rgba(255,255,255,0.2)";
+                el.style.color = "rgba(255,255,255,0.82)";
+              }}
+            >
+              <Phone className="w-4 h-4" />
+              Ücretsiz Ön Görüşme
+            </a>
+          </MagneticButton>
         </motion.div>
       </motion.div>
 

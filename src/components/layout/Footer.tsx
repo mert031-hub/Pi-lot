@@ -218,6 +218,20 @@ export default function Footer() {
             π — izlenebilirlik × sonsuzluk
           </p>
         </div>
+
+        {/* Pi easter egg — for the detail-oriented */}
+        <div
+          className="pb-4 text-center"
+          style={{ borderTop: "1px solid rgba(108,140,165,0.05)" }}
+        >
+          <p
+            className="font-mono pt-3 select-none"
+            style={{ fontSize: "9px", letterSpacing: "0.18em", color: "rgba(108,140,165,0.13)" }}
+            title="Engineered For Precision"
+          >
+            Engineered For Precision&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;π ≈ 3.14159265358979323846264338327950288
+          </p>
+        </div>
       </div>
     </footer>
   );

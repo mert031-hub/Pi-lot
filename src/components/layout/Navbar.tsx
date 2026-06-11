@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Menu, X } from "lucide-react";
 import Link from "next/link";
@@ -79,6 +79,25 @@ function useActiveSection(ids: string[]) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [eggClicks, setEggClicks] = useState(0);
+  const [showEgg, setShowEgg] = useState(false);
+  const eggTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const eggDismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleLogoEgg = () => {
+    const next = eggClicks + 1;
+    if (next >= 5) {
+      setShowEgg(true);
+      setEggClicks(0);
+      if (eggTimerRef.current) clearTimeout(eggTimerRef.current);
+      if (eggDismissRef.current) clearTimeout(eggDismissRef.current);
+      eggDismissRef.current = setTimeout(() => setShowEgg(false), 5000);
+    } else {
+      setEggClicks(next);
+      if (eggTimerRef.current) clearTimeout(eggTimerRef.current);
+      eggTimerRef.current = setTimeout(() => setEggClicks(0), 2000);
+    }
+  };
 
   const sectionIds = navLinks.map((l) => l.sectionId);
   const activeSection = useActiveSection(sectionIds);
@@ -122,7 +141,7 @@ export default function Navbar() {
           className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between transition-all duration-500"
           style={{ paddingTop: scrolled ? "0.875rem" : "1.25rem", paddingBottom: scrolled ? "0.875rem" : "1.25rem" }}
         >
-          <Link href="/" aria-label="Pi-Lot Ana Sayfa">
+          <Link href="/" aria-label="Pi-Lot Ana Sayfa" onClick={handleLogoEgg}>
             <motion.div animate={{ scale: scrolled ? 0.88 : 1 }} transition={{ duration: 0.3 }}>
               <PiLotLogo />
             </motion.div>
@@ -217,6 +236,57 @@ export default function Navbar() {
           </button>
         </div>
       </motion.header>
+
+      {/* Logo easter egg */}
+      <AnimatePresence>
+        {showEgg && (
+          <motion.div
+            className="fixed inset-0 z-[150] flex items-center justify-center pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="px-10 py-8 text-center max-w-xs relative"
+              style={{
+                backgroundColor: "rgba(13,24,33,0.97)",
+                border: "1px solid rgba(108,140,165,0.3)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+              }}
+              initial={{ y: 24, scale: 0.92, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: -24, scale: 0.92, opacity: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* Corner accents */}
+              <span className="absolute top-0 left-0 w-4 h-4" style={{ borderTop: "1px solid rgba(223,107,48,0.5)", borderLeft: "1px solid rgba(223,107,48,0.5)" }} />
+              <span className="absolute bottom-0 right-0 w-4 h-4" style={{ borderBottom: "1px solid rgba(223,107,48,0.5)", borderRight: "1px solid rgba(223,107,48,0.5)" }} />
+              <motion.div
+                className="text-5xl font-bold mb-5"
+                style={{ fontFamily: "var(--font-space-grotesk)", color: "#6C8CA5" }}
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                π
+              </motion.div>
+              <p
+                className="text-base leading-relaxed mb-4"
+                style={{ fontFamily: "var(--font-space-grotesk)", color: "rgba(255,255,255,0.78)" }}
+              >
+                &ldquo;π never ends.<br />Neither does improvement.&rdquo;
+              </p>
+              <p
+                className="font-mono text-[9px] tracking-[0.2em]"
+                style={{ color: "rgba(108,140,165,0.38)" }}
+              >
+                3.14159265358979323846...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile drawer */}
       <AnimatePresence>

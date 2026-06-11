@@ -72,6 +72,86 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         }}
       />
 
+      {/* Math constants stream — left side */}
+      <motion.div
+        className="absolute left-24 top-1/4 hidden lg:flex flex-col gap-1.5 pointer-events-none select-none"
+        aria-hidden="true"
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: phase >= 2 ? 1 : 0, x: phase >= 2 ? 0 : -10 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        {[
+          "π = 3.14159265358979",
+          "      323846264338327",
+          "      950288419716939",
+          "───────────────────",
+          "e = 2.71828182845904",
+          "      523536028747135",
+          "───────────────────",
+          "φ = 1.61803398874989",
+          "      484820458683436",
+          "───────────────────",
+          "τ = 6.28318530717958",
+        ].map((line, i) => (
+          <motion.span
+            key={i}
+            className="font-mono block"
+            style={{
+              fontSize: "8px",
+              letterSpacing: "0.12em",
+              color: line.includes("─")
+                ? "rgba(108,140,165,0.12)"
+                : "rgba(108,140,165,0.28)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: phase >= 2 ? 1 : 0 }}
+            transition={{ delay: 0.5 + i * 0.06, duration: 0.4 }}
+          >
+            {line}
+          </motion.span>
+        ))}
+      </motion.div>
+
+      {/* Engineering data stream — right side */}
+      <motion.div
+        className="absolute right-24 top-1/4 hidden lg:flex flex-col gap-1.5 text-right pointer-events-none select-none"
+        aria-hidden="true"
+        initial={{ opacity: 0, x: 10 }}
+        animate={{ opacity: phase >= 3 ? 1 : 0, x: phase >= 3 ? 0 : 10 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        {[
+          "ISO 3834-2 ▸ ACTIVE",
+          "LEAN.MFG ▸ ENABLED",
+          "SIX.SIGMA ▸ BB",
+          "─────────────────",
+          "OEE: 87.4%",
+          "SCRAP: 0.31%",
+          "CYCLE.T: 4.2s",
+          "─────────────────",
+          "PLT-2025 ▸ READY",
+          "CAP.UTIL: 92.1%",
+          "SYS.STATUS ▸ OK",
+        ].map((line, i) => (
+          <motion.span
+            key={i}
+            className="font-mono block"
+            style={{
+              fontSize: "8px",
+              letterSpacing: "0.12em",
+              color: line.includes("─")
+                ? "rgba(223,107,48,0.12)"
+                : "rgba(223,107,48,0.22)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: phase >= 3 ? 1 : 0 }}
+            transition={{ delay: 0.6 + i * 0.06, duration: 0.4 }}
+          >
+            {line}
+          </motion.span>
+        ))}
+      </motion.div>
+
       {/* Corner brackets */}
       {[
         { top: "2rem", left: "2rem", bt: "borderTop", bl: "borderLeft" },
