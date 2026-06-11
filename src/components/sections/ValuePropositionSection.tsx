@@ -64,7 +64,7 @@ export default function ValuePropositionSection() {
     offset: ["start start", "end end"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${(values.length - 1) * 100}%`]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(values.length - 1) * 100}vw`]);
 
   return (
     <section
