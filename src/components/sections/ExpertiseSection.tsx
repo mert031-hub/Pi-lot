@@ -84,6 +84,90 @@ const expertiseAreas = [
   },
 ];
 
+function PipelineNode({
+  area,
+  index,
+  inView,
+}: {
+  area: (typeof expertiseAreas)[0];
+  index: number;
+  inView: boolean;
+}) {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById(`uzmanlik-${area.num}`);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  return (
+    <motion.button
+      className="flex flex-col items-center gap-3 px-4 group flex-shrink-0"
+      onClick={handleClick}
+      initial={{ opacity: 0, y: 12 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: 0.3 + index * 0.07, duration: 0.5 }}
+    >
+      <div
+        className="w-11 h-11 flex items-center justify-center text-xs font-bold transition-all duration-300 group-hover:scale-105"
+        style={{
+          border: `1px solid ${area.accentColor}`,
+          color: area.accentColor,
+          backgroundColor: `${area.accentColor}14`,
+          fontFamily: "monospace",
+        }}
+      >
+        {area.num}
+      </div>
+      <span
+        className="text-[10px] tracking-wider text-center transition-colors duration-200 group-hover:opacity-90 whitespace-nowrap"
+        style={{ color: "rgba(255,255,255,0.42)", maxWidth: 80, lineHeight: 1.3 }}
+      >
+        {area.title.replace("\n", " ")}
+      </span>
+    </motion.button>
+  );
+}
+
+function PipelineArrow({
+  accent,
+  index,
+  inView,
+}: {
+  accent: string;
+  index: number;
+  inView: boolean;
+}) {
+  return (
+    <div className="flex items-center flex-shrink-0 self-start mt-[14px]">
+      <motion.div
+        className="w-6 h-px"
+        style={{ backgroundColor: `${accent}30` }}
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ delay: 0.38 + index * 0.07, duration: 0.35 }}
+      />
+      <motion.span
+        className="text-[11px]"
+        style={{ color: `${accent}35` }}
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.44 + index * 0.07 }}
+      >
+        ›
+      </motion.span>
+      <motion.div
+        className="w-6 h-px"
+        style={{ backgroundColor: `${accent}30` }}
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ delay: 0.5 + index * 0.07, duration: 0.35 }}
+      />
+    </div>
+  );
+}
+
 function ExpertiseItem({
   area,
   index,
@@ -97,6 +181,7 @@ function ExpertiseItem({
 
   return (
     <div
+      id={`uzmanlik-${area.num}`}
       ref={ref}
       className="py-24 lg:py-32 relative overflow-hidden"
       style={{
@@ -400,6 +485,51 @@ export default function ExpertiseSection() {
               sonuçlarla hizmet veriyoruz.
             </p>
           </motion.div>
+
+          {/* Production pipeline nav */}
+          <div className="mt-12 overflow-x-auto pb-2 -mx-2 px-2">
+            <div className="flex items-start min-w-max">
+              {expertiseAreas.flatMap((area, i) => {
+                const items = [
+                  <PipelineNode
+                    key={area.num}
+                    area={area}
+                    index={i}
+                    inView={inView}
+                  />,
+                ];
+                if (i < expertiseAreas.length - 1) {
+                  items.push(
+                    <PipelineArrow
+                      key={`arrow-${i}`}
+                      accent={area.accentColor}
+                      index={i}
+                      inView={inView}
+                    />
+                  );
+                }
+                return items;
+              })}
+            </div>
+            {/* Pipeline label */}
+            <motion.div
+              className="mt-5 flex items-center gap-2"
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.9, duration: 0.5 }}
+            >
+              <div
+                className="h-px w-8"
+                style={{ backgroundColor: "rgba(108,140,165,0.25)" }}
+              />
+              <span
+                className="font-mono text-[9px] tracking-[0.2em] uppercase"
+                style={{ color: "rgba(108,140,165,0.3)" }}
+              >
+                Üretim hattı akışı — tıklayarak navigasyon
+              </span>
+            </motion.div>
+          </div>
         </div>
       </div>
 

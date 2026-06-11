@@ -8,6 +8,8 @@ import ProcessSection from "@/components/sections/ProcessSection";
 import TeamSection from "@/components/sections/TeamSection";
 import WhyPiLotSection from "@/components/sections/WhyPiLotSection";
 import ValuePropositionSection from "@/components/sections/ValuePropositionSection";
+import CaseStudiesSection from "@/components/sections/CaseStudiesSection";
+import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
 import FloatingElements from "@/components/ui/FloatingElements";
 import MobileCTABar from "@/components/ui/MobileCTABar";
@@ -26,6 +28,8 @@ export default function Home() {
         <TeamSection />
         <WhyPiLotSection />
         <ValuePropositionSection />
+        <CaseStudiesSection />
+        <FAQSection />
         <ContactSection />
       </main>
       <Footer />
