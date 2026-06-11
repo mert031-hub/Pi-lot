@@ -10,6 +10,8 @@ import WhyPiLotSection from "@/components/sections/WhyPiLotSection";
 import ValuePropositionSection from "@/components/sections/ValuePropositionSection";
 import ContactSection from "@/components/sections/ContactSection";
 import FloatingElements from "@/components/ui/FloatingElements";
+import MobileCTABar from "@/components/ui/MobileCTABar";
+import CookieBanner from "@/components/ui/CookieBanner";
 
 export default function Home() {
   return (
@@ -27,6 +29,8 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingElements />
+      <MobileCTABar />
+      <CookieBanner />
     </ClientRoot>
   );
 }
