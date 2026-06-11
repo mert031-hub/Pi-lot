@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import ScrambleText from "@/components/ui/ScrambleText";
 
 const timelineSteps = [
   {
@@ -191,17 +192,18 @@ export default function AboutSection() {
               color: "#2C3E50",
             }}
           >
-            Neden{" "}
-            <span
+            <ScrambleText text="Neden" duration={600} />{" "}
+            <ScrambleText
+              text="Pi-Lot?"
+              delay={200}
+              duration={700}
               style={{
                 background: "linear-gradient(135deg, #6C8CA5, #DF6B30)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
-            >
-              Pi-Lot?
-            </span>
+            />
           </h2>
           <p
             className="text-lg leading-relaxed"

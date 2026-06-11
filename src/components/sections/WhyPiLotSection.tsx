@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimatedCounter from "@/components/ui/AnimatedCounter";
+import ParticleNetwork from "@/components/ui/ParticleNetwork";
+import ScrambleText from "@/components/ui/ScrambleText";
 
 const kpis = [
   {
@@ -91,6 +93,7 @@ export default function WhyPiLotSection() {
     >
       {/* Background */}
       <div className="absolute inset-0 grid-pattern-dark" />
+      <ParticleNetwork count={50} connectDist={120} color="108,140,165" style={{ opacity: 0.5 }} />
       <div
         className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none"
         style={{
@@ -125,8 +128,8 @@ export default function WhyPiLotSection() {
               className="section-heading text-white"
               style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)" }}
             >
-              Sayılar{" "}
-              <span style={{ color: "#6C8CA5" }}>Konuşuyor</span>
+              <ScrambleText text="Sayılar" duration={700} />{" "}
+              <ScrambleText text="Konuşuyor" delay={200} duration={700} style={{ color: "#6C8CA5" }} />
             </h2>
           </motion.div>
 

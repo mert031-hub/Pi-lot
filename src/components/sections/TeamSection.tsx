@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Linkedin, Mail, Phone } from "lucide-react";
+import ParticleNetwork from "@/components/ui/ParticleNetwork";
+import ScrambleText from "@/components/ui/ScrambleText";
 
 const teamMember = {
   name: "Emre Kasım",
@@ -44,6 +46,7 @@ export default function TeamSection() {
     >
       {/* Background grid */}
       <div className="absolute inset-0 grid-pattern-dark opacity-60" />
+      <ParticleNetwork count={40} connectDist={110} color="108,140,165" style={{ opacity: 0.35 }} />
 
       {/* Accent */}
       <div
@@ -75,8 +78,9 @@ export default function TeamSection() {
             className="section-heading text-white"
             style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)" }}
           >
-            Uzmanlık <span style={{ color: "#6C8CA5" }}>Arkasındaki</span>{" "}
-            İnsan
+            <ScrambleText text="Uzmanlık" duration={700} />{" "}
+            <ScrambleText text="Arkasındaki" delay={150} duration={700} style={{ color: "#6C8CA5" }} />{" "}
+            <ScrambleText text="İnsan" delay={300} duration={700} />
           </h2>
         </motion.div>
 

@@ -58,6 +58,14 @@
   }
 }
 
+/* Custom cursor — only on pointer: fine (desktop mouse) */
+@media (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
 @layer utilities {
   .text-gradient {
     background: linear-gradient(135deg, #6c8ca5 0%, #df6b30 100%);

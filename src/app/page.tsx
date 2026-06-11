@@ -12,6 +12,7 @@ import ContactSection from "@/components/sections/ContactSection";
 import FloatingElements from "@/components/ui/FloatingElements";
 import MobileCTABar from "@/components/ui/MobileCTABar";
 import CookieBanner from "@/components/ui/CookieBanner";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
       <FloatingElements />
       <MobileCTABar />
       <CookieBanner />
+      <CustomCursor />
     </ClientRoot>
   );
 }
