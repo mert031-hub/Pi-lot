@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 const navLinks = [
@@ -215,25 +215,42 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden text-white p-1"
+          {/* Mobile toggle — engineering-style button */}
+          <motion.button
+            className="lg:hidden flex items-center justify-center w-10 h-10 transition-colors duration-300"
+            style={{
+              border: `1px solid ${mobileOpen ? "rgba(108,140,165,0.7)" : "rgba(108,140,165,0.28)"}`,
+              backgroundColor: mobileOpen ? "rgba(108,140,165,0.12)" : "transparent",
+            }}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Menüyü kapat" : "Menüyü aç"}
             aria-expanded={mobileOpen}
+            whileTap={{ scale: 0.93 }}
           >
             <AnimatePresence mode="wait">
               {mobileOpen ? (
-                <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X className="w-6 h-6" />
+                <motion.div
+                  key="x"
+                  initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.18 }}
+                >
+                  <X className="w-5 h-5" style={{ color: "#6C8CA5" }} />
                 </motion.div>
               ) : (
-                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <Menu className="w-6 h-6" />
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.18 }}
+                >
+                  <Menu className="w-5 h-5 text-white" />
                 </motion.div>
               )}
             </AnimatePresence>
-          </button>
+          </motion.button>
         </div>
       </motion.header>
 
@@ -292,55 +309,198 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex flex-col"
-            style={{ background: "rgba(13,24,33,0.98)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)" }}
+            className="fixed inset-0 z-40 flex flex-col overflow-hidden"
+            style={{
+              background: "rgba(10,18,28,0.97)",
+              backdropFilter: "blur(28px)",
+              WebkitBackdropFilter: "blur(28px)",
+            }}
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
+            exit={{ clipPath: "inset(0 100% 0 0)" }}
+            transition={{ duration: 0.48, ease: [0.76, 0, 0.24, 1] }}
           >
-            <div className="flex flex-col items-center justify-center h-full gap-7 pt-20">
+            {/* Background grid decoration */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(108,140,165,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(108,140,165,0.05) 1px, transparent 1px)",
+                backgroundSize: "48px 48px",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Ambient glow — bottom right */}
+            <div
+              className="absolute bottom-0 right-0 w-80 h-80 pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 100% 100%, rgba(223,107,48,0.06) 0%, transparent 65%)",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* ── HEADER SPACER (matches navbar height) ── */}
+            <div className="flex-shrink-0" style={{ height: 68 }} />
+
+            {/* Top accent line */}
+            <motion.div
+              className="mx-6 flex-shrink-0"
+              style={{
+                height: 1,
+                background: "linear-gradient(to right, #6C8CA5 0%, rgba(108,140,165,0.15) 100%)",
+              }}
+              initial={{ scaleX: 0, originX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.55, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            />
+
+            {/* ── NAV LINKS ── */}
+            <nav
+              className="flex-1 flex flex-col justify-center px-6 py-6 overflow-y-auto"
+              aria-label="Mobil navigasyon"
+            >
               {navLinks.map((link, i) => {
                 const isActive = activeSection === link.sectionId;
                 return (
                   <motion.div
                     key={link.label}
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 24 }}
-                    transition={{ delay: 0.05 + i * 0.06, duration: 0.4 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -16 }}
+                    transition={{
+                      delay: 0.1 + i * 0.055,
+                      duration: 0.42,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
                   >
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.sectionId)}
-                      className="text-3xl font-light transition-colors duration-200 flex items-center gap-3"
+                      className="flex items-center justify-between py-4 group"
                       style={{
-                        fontFamily: "var(--font-space-grotesk)",
-                        color: isActive ? "#6C8CA5" : "rgba(255,255,255,0.85)",
+                        borderLeft: `2px solid ${isActive ? "#6C8CA5" : "rgba(108,140,165,0.1)"}`,
+                        paddingLeft: 16,
+                        backgroundColor: isActive
+                          ? "rgba(108,140,165,0.06)"
+                          : "transparent",
+                        transition: "border-color 0.25s, background-color 0.25s",
                       }}
                     >
+                      <div className="flex items-center gap-5">
+                        {/* Index number */}
+                        <span
+                          className="font-mono text-xs tabular-nums flex-shrink-0 transition-colors duration-200"
+                          style={{
+                            color: isActive
+                              ? "#6C8CA5"
+                              : "rgba(108,140,165,0.28)",
+                          }}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {/* Label */}
+                        <span
+                          className="text-xl font-medium transition-colors duration-200"
+                          style={{
+                            fontFamily: "var(--font-space-grotesk)",
+                            color: isActive
+                              ? "#ffffff"
+                              : "rgba(255,255,255,0.7)",
+                          }}
+                        >
+                          {link.label}
+                        </span>
+                      </div>
+
+                      {/* Active arrow — spring animated */}
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: "#6C8CA5" }} />
+                        <motion.span
+                          layoutId="mobileActiveArrow"
+                          className="text-sm flex-shrink-0 mr-2"
+                          style={{ color: "#6C8CA5" }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 28,
+                          }}
+                        >
+                          →
+                        </motion.span>
                       )}
-                      {link.label}
                     </a>
                   </motion.div>
                 );
               })}
-              <motion.a
-                href="tel:+905307456800"
-                className="mt-4 flex items-center gap-3 px-8 py-3 text-sm font-semibold tracking-widest uppercase"
-                style={{ border: "1px solid rgba(108,140,165,0.5)", color: "#6C8CA5" }}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 24 }}
-                transition={{ delay: 0.42, duration: 0.4 }}
-                onClick={() => setMobileOpen(false)}
-              >
-                <Phone className="w-4 h-4" />
-                0530 745 68 00
-              </motion.a>
-            </div>
+            </nav>
+
+            {/* ── BOTTOM CTA AREA ── */}
+            <motion.div
+              className="flex-shrink-0 px-6"
+              style={{
+                paddingBottom: "max(1.5rem, env(safe-area-inset-bottom, 1.5rem))",
+              }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ delay: 0.38, duration: 0.4 }}
+            >
+              {/* Separator */}
+              <div
+                className="mb-5"
+                style={{ height: 1, backgroundColor: "rgba(108,140,165,0.1)" }}
+              />
+
+              {/* CTA buttons */}
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                <a
+                  href="tel:+905307456800"
+                  className="flex items-center justify-center gap-2.5 py-3.5 text-xs font-semibold tracking-widest uppercase transition-all duration-200 active:scale-95"
+                  style={{
+                    border: "1px solid rgba(108,140,165,0.4)",
+                    color: "#6C8CA5",
+                    letterSpacing: "0.08em",
+                  }}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span>Ara</span>
+                </a>
+                <a
+                  href="https://wa.me/905307456800"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 py-3.5 text-xs font-semibold tracking-widest uppercase transition-all duration-200 active:scale-95"
+                  style={{
+                    backgroundColor: "rgba(37,211,102,0.12)",
+                    border: "1px solid rgba(37,211,102,0.3)",
+                    color: "#25D366",
+                    letterSpacing: "0.08em",
+                  }}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+
+              {/* Pi footer detail */}
+              <div className="flex items-center justify-between">
+                <span
+                  className="font-mono text-[9px] tracking-[0.15em]"
+                  style={{ color: "rgba(108,140,165,0.22)" }}
+                >
+                  π ≈ 3.14159265358979
+                </span>
+                <span
+                  className="font-mono text-[9px] tracking-[0.15em]"
+                  style={{ color: "rgba(223,107,48,0.22)" }}
+                >
+                  PLT-2025
+                </span>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
