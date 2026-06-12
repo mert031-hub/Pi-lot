@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useDragControls } from "framer-motion";
 import { Phone, Menu, X, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -83,6 +83,18 @@ export default function Navbar() {
   const [showEgg, setShowEgg] = useState(false);
   const eggTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const eggDismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const dragControls = useDragControls();
+  const { scrollYProgress } = useScroll();
+  const scrollBarHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  // ESC key closes drawer
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMobileOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
 
   const handleLogoEgg = () => {
     const next = eggClicks + 1;
@@ -319,6 +331,14 @@ export default function Navbar() {
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 100% 0 0)" }}
             transition={{ duration: 0.48, ease: [0.76, 0, 0.24, 1] }}
+            drag="y"
+            dragControls={dragControls}
+            dragListener={false}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.25 }}
+            onDragEnd={(_, info) => {
+              if (info.velocity.y > 300 || info.offset.y > 110) setMobileOpen(false);
+            }}
           >
             {/* Background grid decoration */}
             <div
@@ -341,8 +361,37 @@ export default function Navbar() {
               aria-hidden="true"
             />
 
+            {/* Scroll progress — left edge strip */}
+            <div
+              className="absolute left-0 top-0 bottom-0 pointer-events-none"
+              style={{ width: 2, backgroundColor: "rgba(108,140,165,0.08)", zIndex: 1 }}
+              aria-hidden="true"
+            >
+              <motion.div
+                className="absolute top-0 left-0 w-full"
+                style={{ height: scrollBarHeight, backgroundColor: "#6C8CA5", opacity: 0.55 }}
+              />
+            </div>
+
             {/* ── HEADER SPACER (matches navbar height) ── */}
             <div className="flex-shrink-0" style={{ height: 68 }} />
+
+            {/* Swipe-down drag handle */}
+            <motion.div
+              className="flex-shrink-0 flex justify-center py-2 cursor-grab active:cursor-grabbing"
+              style={{ touchAction: "none" }}
+              onPointerDown={(e) => dragControls.start(e)}
+              aria-hidden="true"
+            >
+              <div
+                style={{
+                  width: 36,
+                  height: 3,
+                  borderRadius: 2,
+                  backgroundColor: "rgba(108,140,165,0.28)",
+                }}
+              />
+            </motion.div>
 
             {/* Top accent line */}
             <motion.div
@@ -378,16 +427,22 @@ export default function Navbar() {
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.sectionId)}
-                      className="flex items-center justify-between py-4 group"
+                      className="relative flex items-center justify-between py-4 group overflow-hidden"
                       style={{
                         borderLeft: `2px solid ${isActive ? "#6C8CA5" : "rgba(108,140,165,0.1)"}`,
                         paddingLeft: 16,
-                        backgroundColor: isActive
-                          ? "rgba(108,140,165,0.06)"
-                          : "transparent",
-                        transition: "border-color 0.25s, background-color 0.25s",
+                        transition: "border-color 0.25s",
                       }}
                     >
+                      {/* Animated active background — spring-animated layoutId */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="mobileNavBg"
+                          className="absolute inset-0 pointer-events-none"
+                          style={{ backgroundColor: "rgba(108,140,165,0.07)" }}
+                          transition={{ type: "spring", stiffness: 360, damping: 30 }}
+                        />
+                      )}
                       <div className="flex items-center gap-5">
                         {/* Index number */}
                         <span
